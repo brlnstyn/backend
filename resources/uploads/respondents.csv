@@ -1,0 +1,3 @@
+entry_date,respondent_code,respondent_name,province,district,districts,ward,address,phone,email,gender,age,marital_status,family_members,education,occupation,expense,source_water,source_energy,filename,status
+2022-01-23,90,nana,nana,nana,nana,nana,nana,12345678,nana@mail.com,P,12,nana,4,nana,nana,nana,nana,nana,nana,1
+2022-01-24,78,berlin,berlin,berlin,berlin,berlin,berlin,98765432,berlin@mail.com,P,56,berlin,9,berlin,berlin,berlin,berlin,berlin,berlin,1
