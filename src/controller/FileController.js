@@ -8,6 +8,7 @@ const csv = require('fast-csv');
 const mysql = require('mysql')
 const multer = require('multer')
 const path = require('path')
+const Respondents = require('../../models/respondents');
 const { success, error, validation } = require('../../config/responseApi')
 const { body, validationResult,check } = require('express-validator');
 
@@ -57,48 +58,41 @@ const upload = async (req, res) => {
       });
     }
   } catch (err) {
+    if (err.code == "LIMIT_FILE_SIZE") {
+      return res.status(500).send({
+        message: "File size cannot be larger than 2MB!",
+      });
+    }
     res.status(500).json(error("Error", res.statusCode, err.message));
   }
 };
 
-const getListFiles = (req, res) => {
-  const directoryPath = __basedir + "/resources/uploads/";
+const getRespondents = async(req, res) => {
+  try{
+      const response = await Respondents.findAll();
+      res.status(200).json(response);
+  }catch(error){
+      console.log(error.message);
+  }
+}
 
-  fs.readdir(directoryPath, function (err, files) {
-    if (err) {
-      res.status(500).send({
-        message: "Unable to scan files!",
+const deleteRespondent = async(req, res) => {
+  try{
+      await Respondents.destroy({
+          where: {
+              id: req.params.id
+          }
       });
-    }
+      res.status(200).json({msg: "Respondents deleted successfully"});
+  }catch(error){
+      console.log(error.message);
+  }
+}
 
-    let fileInfos = [];
 
-    files.forEach((file) => {
-      fileInfos.push({
-        name: file,
-        url: baseUrl + file,
-      });
-    });
-
-    res.status(200).send(fileInfos);
-  });
-};
-
-const download = (req, res) => {
-  const fileName = req.params.name;
-  const directoryPath = __basedir + "/resources/uploads/";
-
-  res.download(directoryPath + fileName, fileName, (err) => {
-    if (err) {
-      res.status(500).send({
-        message: "Could not download the file. " + err,
-      });
-    }
-  });
-};
 
 module.exports = {
   upload,
-  getListFiles,
-  download,
+  getRespondents,
+  deleteRespondent
 };

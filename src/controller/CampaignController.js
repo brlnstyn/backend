@@ -1,6 +1,16 @@
 const Campaigns = require('../../models/campaigns');
 const express = require('express')
 
+
+exports.validate = (method) => {
+    switch (method) {
+        case 'create': {
+            return [                
+                check('id').exists().notEmpty(),
+            ]
+        }
+    }
+}
 const getCampaign = async(req, res) => {
     try{
         const response = await Campaigns.findAll();

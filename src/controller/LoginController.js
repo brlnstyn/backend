@@ -31,7 +31,7 @@ exports.login = async  (req, res) => {
             // console.log(jwt.sign(user.id));
             // return;
           // Create token
-          var token = 'Bearer ' + jwt.sign({
+          var token = jwt.sign({
             id: user.id,
         }, process.env.JWT_KEY, {
             expiresIn: "2h" //24h expired
