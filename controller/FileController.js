@@ -8,8 +8,8 @@ const csv = require('fast-csv');
 const mysql = require('mysql')
 const multer = require('multer')
 const path = require('path')
-const Respondents = require('../../models/respondents');
-const { success, error, validation } = require('../../config/responseApi')
+const Respondents = require('../models/respondents');
+const { success, error, validation } = require('../config/responseApi')
 const { body, validationResult,check } = require('express-validator');
 
 const upload = async (req, res) => {
@@ -49,13 +49,9 @@ const upload = async (req, res) => {
     stream.pipe(csvStream);
       // console.log(csvStream);
       // return;
-      res.status(200).send({
-        message: "File has been successfully uploaded!"
-      });
+      res.status(200).json(success("File has been successfully uploaded!", res.statusCode));
     }else{
-      res.status(400).send({
-        message: "No file has been uploaded!"
-      });
+      res.status(500).json(error("Error", res.statusCode, err.message));
     }
   } catch (err) {
     if (err.code == "LIMIT_FILE_SIZE") {

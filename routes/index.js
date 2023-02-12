@@ -4,7 +4,6 @@ const router = express.Router();
 const FileController = require("../controller/FileController");
 const CampaignController = require("../controller/CampaignController");
 const LoginController = require("../controller/LoginController");
-// const WhatsAppController = require("../controller/WhatsAppController");
 
 let routes = (app) => {
   // login
@@ -21,9 +20,6 @@ let routes = (app) => {
   router.post("/campaigns", auth, CampaignController.createCampaign);
   router.patch("/campaigns/:id", auth, CampaignController.updateCampaign);
   router.delete("/campaigns/:id", auth, CampaignController.deleteCampaign);
-
-  // whatsapp
-  // router.post("/send-message", WhatsAppController.options);
 
   app.use(router);
 };

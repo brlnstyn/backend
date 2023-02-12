@@ -2,12 +2,23 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const app = express();
+const db = require('./models');
+const controller = require('./controller/CampaignController');
 
 global.__basedir = __dirname;
 
 var corsOptions = {
   origin: "http://localhost:8080"
 };
+
+// const run = async () => {
+
+// };
+
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync db.");
+//   run();
+// });
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -21,7 +32,7 @@ app.use((req, res, next) => {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-const initRoutes = require("./src/routes");
+const initRoutes = require("./routes");
 
 app.use(express.urlencoded({ extended: true }));
 initRoutes(app);
