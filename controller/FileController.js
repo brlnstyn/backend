@@ -1,5 +1,4 @@
 const uploadFileMiddleware = require("../middleware/upload");
-// const db = require('../../config/database');
 const express = require('express')
 const app = express()
 const bodyparser = require('body-parser')
@@ -13,52 +12,59 @@ const { success, error, validation } = require('../config/responseApi')
 const { body, validationResult,check } = require('express-validator');
 
 const upload = async (req, res) => {
-  const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "campaigns"
-})
-  // console.log(req);
-  //   return;
   try {
     await uploadFileMiddleware(req, res);
-    // console.log(req.file);
-    // return;
     if(req.file != undefined){
-      // console.log(req.file);
-      // return;
-      let stream = fs.createReadStream(req.file.path);
-      let csvData = [];
-      let csvStream = csv
-        .parse()
-        .on("data", function (data) {
-            csvData.push(data);
+      let data = []; 
+      fs.createReadStream(path.resolve(req.file.path))
+        .pipe(csv.parse({headers: true}))
+        .on('error', error => {
+          console.error(error);
         })
-        .on("end", function () {
-            // Remove Header ROW
-            csvData.shift();
-    
-            // Open the MySQL connection
-            let query = 'INSERT INTO database_users (entry_date, respondent_code, respondent_name, province, district, districts, ward, address, phone, email, gender, age, marital_status, family_members, education, occupation, expense, source_water, source_energy, filename, status) VALUES ?';
-            db.query(query, [csvData], (error, response) => {
-                console.log(error || response);
-            });
+        .on('data', row => {
+          let respondent = {
+            entry_date:row.entry_date,
+            respondent_code:row.respondent_code,
+            respondent_name:row.respondent_name,
+            province: row.province,
+            district: row.district,
+            districts: row.districts,
+            ward: row.ward,
+            address: row.address,
+            phone: row.phone,
+            email: row.email,
+            gender: row.gender,
+            age: row.age,
+            marital_status: row.marital_status,
+            family_members: row.family_members,
+            education: row.education,
+            occupation: row.occupation,
+            expense: row.expense,
+            source_water: row.source_water,
+            source_energy: row.source_energy,
+            filename: row.filename,
+            status: row.status,
+          };
+          data.push(respondent);
+        })
+        .on('end', () => {
+          Respondents.bulkCreate(data)
+          .then(() => {
+            res.status(200).json(success("File has been uploaded!", res.statusCode));
+          })
+          .catch(err => {
+            res.status(500).json(error("Error", res.statusCode, err.message));
         });
-
-    stream.pipe(csvStream);
-      // console.log(csvStream);
-      // return;
-      res.status(200).json(success("File has been successfully uploaded!", res.statusCode));
+        });
     }else{
-      res.status(500).json(error("Error", res.statusCode, err.message));
+      res.status(500).json(error("no file found"));
     }
   } catch (err) {
-    if (err.code == "LIMIT_FILE_SIZE") {
-      return res.status(500).send({
-        message: "File size cannot be larger than 2MB!",
-      });
-    }
+    // if (err.code == "LIMIT_FILE_SIZE") {
+    //   return res.status(500).send({
+    //     message: "File size cannot be larger than 2MB!",
+    //   });
+    // }
     res.status(500).json(error("Error", res.statusCode, err.message));
   }
 };

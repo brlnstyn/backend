@@ -1,0 +1,2 @@
+entry_date,respondent_code,respondent_name,province,district,districts,ward,address,phone,email,gender,age,marital_status,family_members,education,occupation,expense,source_water,source_energy,filename,status
+2022-01-23,23,dummy,dummy,dummy,dummy,dummy,dummy,12345678,dummy@mail.com,P,12,dummy,4,dummy,dummy,dummy,dummy,dummy,dummy,1

@@ -5,8 +5,8 @@ const {DataTypes} = Sequelize;
 
 const Respondents = db.define('database_users', {
     id: {
-        type: DataTypes.INTEGER,
-        defaultValue: DataTypes.INTEGER,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
     entry_date : DataTypes.STRING,

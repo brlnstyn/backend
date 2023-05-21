@@ -6,15 +6,6 @@ const { success, error, validation } = require("../config/responseApi");
 const express = require('express')
 
 
-exports.validate = (method) => {
-    switch (method) {
-        case 'create': {
-            return [                
-                check('id').exists().notEmpty(),
-            ]
-        }
-    }
-}
 const getCampaign = async(req, res) => {
     try{
         const response = await Campaigns.findAll();
@@ -35,24 +26,6 @@ const getCampaignById = async(req, res) => {
     }catch(error){
         console.log(error.message);
     }
-}
-exports.create = (province, campaigns) => {
-    return campaigns.create({
-        campaign_name: campaigns.campaign_name,
-        client_name: campaigns.client_name,
-        setup_domicile: province,
-        setup_age_start: campaigns.setup_age_start,
-        setup_age_end: campaigns.setup_age_end,
-        setup_gender: campaigns.setup_gender,      
-        setup_profession: campaigns.setup_profession,
-        setup_martial_status: campaigns.setup_martial_status,
-        setup_age_married: campaigns.setup_age_married,
-        setup_total_respondent: campaigns.setup_total_respondent,
-        message: campaigns.message,
-        status: campaigns.status,
-        total_blasting: campaigns.total_blasting,
-        blasting_endtime: campaigns.blasting_endtime 
-    })
 }
 const createCampaign = async(req, res) => {
     // console.log(req.body);

@@ -1,7 +1,6 @@
 {
   "name": "uploads-csv",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,5 +25,15 @@
     "sequelize": "^6.28.0",
     "uuid": "^9.0.0",
     "uuidv4": "^6.2.13"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brlnstyn/backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brlnstyn/backend/issues"
+  },
+  "homepage": "https://github.com/brlnstyn/backend#readme",
+  "description": ""
 }
